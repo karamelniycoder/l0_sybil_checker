@@ -16,9 +16,11 @@ class Excel:
 
         sheet['A1'] = 'Address'
         sheet['B1'] = 'Status'
+        sheet['C1'] = 'Sybil Source'
 
         sheet.column_dimensions['A'].width = 47
         sheet.column_dimensions['B'].width = 18
+        sheet.column_dimensions['C'].width = 53
 
         for cell in sheet._cells:
             sheet.cell(cell[0], cell[1]).font = Font(bold=True)
@@ -33,6 +35,7 @@ class Excel:
             try:
                 workbook = load_workbook('results/'+self.file_name)
                 sheet = workbook.active
+                if len(data) == 3: data[2] = f'=HYPERLINK("{data[2]}", "{data[2]}")'
                 sheet.append([*data])
 
                 for row_cells in sheet.iter_rows(min_row=sheet.max_row, max_row=sheet.max_row):

@@ -3,9 +3,12 @@ from excel import Excel
 print(f'\n\nLayerZero Sybil Checker\n')
 
 
-L0_sybils = []
+L0_sybils_raw = []
+L0_sybils = {}
 for i in range(1, 6):
-    with open(f'sybil_list/L0_sybils{i}.txt') as f: L0_sybils += f.read().splitlines()
+    with open(f'sybil_list/L0_sybils{i}.txt') as f: L0_sybils_raw += f.read().splitlines()
+L0_sybils = {sybil.split(',')[-1].lower(): sybil.split(',')[0] for sybil in L0_sybils_raw}
+
 with open('addresses.txt') as f: addresses = f.read().splitlines()
 excel = Excel(total_len=len(addresses), name="sybil")
 
@@ -16,11 +19,12 @@ for index, address in enumerate(addresses):
         print(f'[-] [{index+1}/{len(addresses)}] {address}: SYBIL !!!')
         total_sybil += 1
         status = "Sybil"
+        data = [address, "Sybil", L0_sybils[address.lower()]]
     else:
         print(f'[+] [{index+1}/{len(addresses)}] {address}: not sybil')
-        status = "Not sybil"
+        data = [address, "Not sybil"]
 
-    excel.edit_table(data=[address, status])
+    excel.edit_table(data=data)
 excel.edit_table(data=[f"Total sybils: {total_sybil}/{len(addresses)}"])
 
 input(f'\nTotal sybils: {total_sybil}/{len(addresses)}\nResults saved in results/{excel.file_name}\n\n> Exit')
