@@ -35,7 +35,7 @@ class Excel:
             try:
                 workbook = load_workbook('results/'+self.file_name)
                 sheet = workbook.active
-                if len(data) == 3: data[2] = f'=HYPERLINK("{data[2]}", "{data[2]}")'
+                if len(data) == 3 and "http" in data[2]: data[2] = f'=HYPERLINK("{data[2]}", "{data[2]}")'
                 sheet.append([*data])
 
                 for row_cells in sheet.iter_rows(min_row=sheet.max_row, max_row=sheet.max_row):
