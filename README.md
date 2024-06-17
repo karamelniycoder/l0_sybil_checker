@@ -1,3 +1,7 @@
+### UPDATED 17.06
+
+---
+
 ## LayerZero Sybil Checker
 
 1. Fill `addresses.txt` with your addresses

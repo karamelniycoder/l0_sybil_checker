@@ -1,3 +1,4 @@
+from os import listdir
 from excel import Excel
 
 print(f'\n\nLayerZero Sybil Checker\n')
@@ -5,9 +6,9 @@ print(f'\n\nLayerZero Sybil Checker\n')
 
 L0_sybils_raw = []
 L0_sybils = {}
-for i in range(1, 6):
-    with open(f'sybil_list/L0_sybils{i}.txt') as f: L0_sybils_raw += f.read().splitlines()
-L0_sybils = {sybil.split(',')[-1].lower(): sybil.split(',')[0] for sybil in L0_sybils_raw}
+for file_name in listdir('sybil_list'):
+    with open(f'sybil_list/{file_name}') as f: L0_sybils_raw += f.read().splitlines()
+L0_sybils = {sybil.split(',')[-1].lower(): sybil.split(',')[0] for sybil in L0_sybils_raw if sybil}
 
 with open('addresses.txt') as f: addresses = f.read().splitlines()
 excel = Excel(total_len=len(addresses), name="sybil")
